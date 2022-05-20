@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- https://logback.qos.ch/manual/appenders.html 官网 -->
+<configuration scan="true" scanPeriod="60 seconds" debug="false">
+
+    <!--/root/dap-core/log/gateway-engine/-->
+    <!-- 日志存放路径 -->
+    <property name="log.path" value="E:/log"/>
+    <!-- 日志输出格式 -->
+    <property name="log.pattern" value="%d{yyyy-MM-dd HH:mm:ss:SSS} %-5level %thread %logger{40}.%method - %line - %msg%n"/>
+
+    <!-- 控制台输出 -->
+    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${log.pattern}</pattern>
+        </encoder>
+    </appender>
+
+
+    <!-- 系统日志输出 -->
+    <appender name="dap-gateway-engine" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!-- 循环政策：基于时间创建日志文件 -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!-- 日志文件名格式 -->
+            <fileNamePattern>${log.path}/dap-gateway-engine/%d{yyyy-MM-dd}/DAP_GATEWAY_ENGINE_%d{yyyy-MM-dd}_%i.log.gz</fileNamePattern>
+            <maxHistory>180</maxHistory>
+            <maxFileSize>30MB</maxFileSize>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${log.pattern}</pattern>
+        </encoder>
+    </appender>
+
+    <!-- TRACE < DEBUG < INFO < WARN < ERROR-->
+    <!-- 系统模块日志级别控制  -->
+    <logger name="org.springframework.boot.autoconfigure" level="error"/>
+    <logger name="org.springframework.aop.framework.CglibAopProxy" level="warn"/>
+    <logger name="org.apache.zookeeper" level="warn"/>
+
+    <root level="INFO">
+        <appender-ref ref="dap-gateway-engine"/>
+        <appender-ref ref="console"/>
+    </root>
+
+
+</configuration>

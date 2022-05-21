@@ -5,10 +5,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.RandomAccessFile;
 import java.util.Arrays;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
-import org.apache.commons.io.IOUtils;
 
 import net.sf.sevenzipjbinding.ExtractOperationResult;
 import net.sf.sevenzipjbinding.IInArchive;
@@ -18,11 +15,17 @@ import net.sf.sevenzipjbinding.SevenZipException;
 import net.sf.sevenzipjbinding.impl.RandomAccessFileInStream;
 import net.sf.sevenzipjbinding.simple.ISimpleInArchive;
 import net.sf.sevenzipjbinding.simple.ISimpleInArchiveItem;
+import org.apache.commons.io.IOUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class Un7zUtils {
 
+    private static final Logger log = LoggerFactory.getLogger(Un7zUtils.class);
+
 
     /**
+     *
      *
      * @Description (解压7z)
      * @param file7zPath(7z文件路径)
@@ -111,7 +114,7 @@ public class Un7zUtils {
         int length = chars.length;
 
         //nohup java -jar 7zip-full.jar >msg.log 2>&1 &;
-
+        String password = "";
         for(int a = 0;a<length;a++) {
             StringBuffer sb = new StringBuffer();
             sb.append(chars[a]);
@@ -128,12 +131,13 @@ public class Un7zUtils {
                                                     for (int l = 0; l < length; l++) {
                                                         for (int m = 0; m < length; m++) {
                                                             for (int n = 0; n < length; n++) {
-
                                                                 try {
-                                                                    String password = sb.toString() + chars[b] + chars[c] + chars[d]
+                                                                    password = sb.toString() + chars[b] + chars[c] + chars[d]
                                                                             + chars[e] + chars[f]  + chars[g]+ chars[h]+ chars[i]
                                                                             + chars[j]+ chars[k]+ chars[l]+ chars[m]+ chars[n];
-                                                                    int i1 = Un7zUtils.un7z("/root/zp.7z", "/root/", password);
+                                                                    log.info(password);
+//                                                                    Un7zUtils.un7z("/root/zp.7z", "/root/", password);
+                                                                    int i1 = Un7zUtils.un7z("e:\\zp.7z", "e:\\", password);
                                                                 } catch (Exception dfafa) {
                                                                 }
                                                             }
